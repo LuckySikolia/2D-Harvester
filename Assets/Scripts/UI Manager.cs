@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text timerText;
     public GameObject startMenuPanel;
-    public GameObject leaderboardPanel;
+    //public GameObject leaderboardPanel;
     public GameObject resumeMenuPanel;
     public GameObject winUIPanel;
     public GameObject lossUIPanel;
@@ -17,8 +17,8 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         //initialize or hide elements
-        startMenuPanel.SetActive(true);
-        leaderboardPanel.SetActive(false);
+        startMenuPanel.SetActive(false);
+        //leaderboardPanel.SetActive(false);
         resumeMenuPanel.SetActive(false);
         winUIPanel.SetActive(false);
         lossUIPanel.SetActive(false);
