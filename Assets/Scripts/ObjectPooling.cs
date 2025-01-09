@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ObjectPooling : MonoBehaviour
 {
     [System.Serializable]
     public class Pool
     {
-        public string tag;
+        public string objectTag;
         public GameObject prefab;
         public int size;
     }
@@ -44,28 +45,37 @@ public class ObjectPooling : MonoBehaviour
             for(int i = 0; i < pool.size; i++)
             {
                GameObject obj =  Instantiate(pool.prefab);
-                obj.SetActive(false);
+                obj.SetActive(true);
                 objectPool.Enqueue(obj);
             }   
 
-            poolDictionary.Add(pool.tag, objectPool);   
-        }   
+            poolDictionary.Add(pool.objectTag, objectPool);   
+        }
+
+        // Debug the pool dictionary
+        Debug.Log("Pool Dictionary: " + poolDictionary.Count + " pools loaded");
 
     }
 
     //spawn objects from the top of the pool at a random position 
-    public GameObject spawnFromPool(string tag, Vector3 postition, Quaternion rotation)
+    public GameObject spawnFromPool(string objectTag, Vector3 postition, Quaternion rotation)
     {
-        if (!poolDictionary.ContainsKey(tag))
+        if (poolDictionary[objectTag].Count == 0)
         {
-            Debug.LogWarning($"Pool with tag {tag} does not exist");
+            Debug.LogWarning("No objects left in pool for tag: " + objectTag);
             return null;
         }
 
-        
+        if (!poolDictionary.ContainsKey(objectTag))
+        {
+            Debug.LogWarning($"Pool with tag {objectTag} does not exist");
+            return null;
+        }
 
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
-        objectToSpawn.SetActive(true);
+
+
+        GameObject objectToSpawn = poolDictionary[objectTag].Dequeue();
+        //objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = postition;
         objectToSpawn.transform.rotation = rotation;
 
@@ -73,10 +83,10 @@ public class ObjectPooling : MonoBehaviour
     }
 
     //return objects to the pool after they fall out of the screeen or are collected or they hit the bottom boundary
-    public void ReturnToPool(string tag, GameObject obj)
+    public void ReturnToPool(string objectTag, GameObject obj)
     {
-        obj.SetActive(false);
-        poolDictionary[tag].Enqueue(obj);
+        //obj.SetActive(false);
+        poolDictionary[objectTag].Enqueue(obj);
     }
   
 }

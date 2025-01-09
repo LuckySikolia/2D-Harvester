@@ -17,7 +17,7 @@ public class Movementmechanic : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         horizontalMovement = context.ReadValue<Vector2>().x;
-        Debug.Log("Input recognized");
+        //Debug.Log("Input recognized");
     }
 
     // Update is called once per frame
